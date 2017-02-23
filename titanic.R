@@ -244,21 +244,26 @@ rf.train.4 <- data.combined[1:891,c("Pclass","title","FamilySize")]
 set.seed(123)
 rf4 <- randomForest(x=rf.train.4,y=rf.label,importance = TRUE,ntree = 1000)
 rf4
-varImpPlot(rf4)
 
-# Creating train dataset for randomForest using Pclass, title, fare and familysize
-rf.train.5 <- data.combined[1:891,c("Pclass","title","Fare","FamilySize")]
+# Creating train dataset for randomForest using Pclass, title, embarked and familysize
+rf.train.5 <- data.combined[1:891,c("Pclass","title","Embarked","FamilySize")]
 set.seed(123)
 rf5 <- randomForest(x=rf.train.5,y=rf.label,importance = TRUE,ntree = 1000)
 rf5
 varImpPlot(rf5)
 
-# Creating train dataset for randomForest using Pclass, title, embarked and familysize
-rf.train.6 <- data.combined[1:891,c("Pclass","title","Embarked","FamilySize")]
-set.seed(123)
-rf6 <- randomForest(x=rf.train.6,y=rf.label,importance = TRUE,ntree = 1000)
-rf6
-varImpPlot(rf6)
-(rf7)
+# As we can see from the results of RandomForest models, rf4 which the model is created from "Pclass",
+# "title" and "FamilySize" variables has less error (18.52%)
+
+test.df <- data.combined[892:1309,c("Pclass","title","FamilySize")]
+rf4.predict <- predict(rf4,test.df)
+table(rf4.predict)
+
+# creating predicted dataframe 
+predicted.df <- data.frame(PassengerId = rep(892:1309), Survived = rf4.predict)
+
+write.csv(predicted.df, file = "predict_1.csv", row.names = FALSE)
+
+
 
 
